@@ -1,8 +1,10 @@
-# FILERAY-glitch
+# FILERAY
+
+means filebrowser & xray
 
 ## Function about this project
 
-### Deploy xray in glitch, shadowed behind filebrowser.
+Deploy xray in glitch, shadowed behind filebrowser.
 
 ## Start
 
