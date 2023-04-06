@@ -1,0 +1,2 @@
+https://github.com/2dust/v2rayN/releases/latest/download/v2rayN-Core.zip
+https://github.com/2dust/v2rayNG/releases/latest/download/v2rayNG_1.7.38_arm64-v8a.apk

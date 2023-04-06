@@ -1,0 +1,185 @@
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "inbounds": [
+        {
+            "port": 8080,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "b8ed315f-8778-4d74-99c4-f4b2c332be00",
+                        "flow": "xtls-rprx-vision",
+                        "level": 0,
+                        "email": "love"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": 8001
+                    },
+                    {
+                        "path": "/vl",
+                        "dest": 3002
+                    },
+                    {
+                        "path": "/vm",
+                        "dest": 3003
+                    },
+                    {
+                        "path": "/tr",
+                        "dest": 3004
+                    },
+                    {
+                        "path": "/ss",
+                        "dest": 3005
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp"
+            }
+        },
+        {
+            "port": 3002,
+            "listen": "127.0.0.1",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "b8ed315f-8778-4d74-99c4-f4b2c332be00",
+                        "level": 0,
+                        "email": "vless"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "path": "/vl"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "metadataOnly": false
+            }
+        },
+        {
+            "port": 3004,
+            "listen": "127.0.0.1",
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "b8ed315f-8778-4d74-99c4-f4b2c332be00",
+                        "email": "trojan"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "path": "/tr"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "metadataOnly": false
+            }
+        },
+        {
+            "port": 3005,
+            "listen": "127.0.0.1",
+            "protocol": "shadowsocks",
+            "settings": {
+                "clients": [
+                    {
+                        "method": "chacha20-poly1305",
+                        "password": "b8ed315f-8778-4d74-99c4-f4b2c332be00",
+                        "email": "shadowsocks"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "/ss"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "metadataOnly": false
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom"
+        },
+        {
+            "tag":"WARP",
+            "protocol":"wireguard",
+            "settings":{
+                "secretKey":"cKE7LmCF61IhqqABGhvJ44jWXp8fKymcMAEVAzbDF2k=",
+                "address":[
+                    "172.16.0.2/32",
+                    "fd01:5ca1:ab1e:823e:e094:eb1c:ff87:1fab/128"
+                ],
+                "peers":[
+                    {
+                        "publicKey":"bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                        "endpoint":"engage.cloudflareclient.com:2408"
+                    }
+                ]
+            }
+        }
+    ],
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:cn"
+                ],
+                "outboundTag": "block"
+            },
+            {
+                "type": "field",
+                "domain": [
+                    "domain:openai.com",
+                    "domain:ai.com",
+                    "domain:ip.gs",
+                    "geosite:google"
+                ],
+                "outboundTag": "WARP"
+            }
+        ]
+    },
+    "dns": {
+        "servers": [
+            "https+local://1.1.1.1/dns-query"
+        ]
+    }
+}
