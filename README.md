@@ -14,4 +14,4 @@
 
 - Enter your url, if everything is right, website is a filebrowser login page.
 
-- Login filebrowser, and change your password.
+- Login filebrowser (admin@admin), and change your password.
